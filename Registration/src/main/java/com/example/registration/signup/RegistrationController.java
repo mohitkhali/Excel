@@ -44,30 +44,14 @@ public class RegistrationController {
 
             Sheet sheet = workbook.getSheetAt(0);
             Row row = sheet.getRow(0);
+            if (registrationService.headerMatches(row)) {
+//             TODO
+            }
 
-            if (headerMatches(row))
-               return ResponseEntity.status(HttpStatus.OK).body("HEADER MATCHES");
             else
                 return ResponseEntity.status(HttpStatus.OK).body("HEADER NOT");
             } else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD FILE");
-    }
-
-
-
-
-
-    public boolean headerMatches(Row row) {
-        if (row.getLastCellNum() != 3) return false;
-        var set1 = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        var set2 = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        set1.addAll(Set.of("NAME", "DOB", "DESIGNATION"));
-        DataFormatter dataFormatter = new DataFormatter();
-        for (Cell cell : row) {
-            String cellValue = dataFormatter.formatCellValue(cell);
-            set2.add(cellValue);
-        }
-        return set1.equals(set2);
     }
 
 }
